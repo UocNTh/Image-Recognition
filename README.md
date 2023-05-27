@@ -7,7 +7,7 @@
 
 ## Cách để chạy ứng dụng 
 
-- Clone Repository về máy 
+- Clone Repository về máy: git clone https://github.com/UocNTh/image_recognition
 
 - Thiết lập môi trường 
 
