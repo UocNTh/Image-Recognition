@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href={{url_for('static' , filename = 'css/normalize.css')}}>
+        <link rel="stylesheet" href={{url_for('static' , filename = 'css/grid.css')}}>
+        <link rel='stylesheet' href={{url_for('static' , filename = 'css/style.css')}}>
+        
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,300&display=swap" rel="stylesheet" type='text/css'>
+        <title>CIFAR-10</title>
+        <meta name="keywords" content="cutom file input, styling, label, cross-browser, accessible, input type file" />
+		
+		<style>
+			.content {
+			  max-width: 500px;
+			  margin: auto;
+			  }
+			.bg-img{
+                height: 100vh;
+                width:100%;
+                background: linear-gradient(45deg,#d2001a,#7462ff,#f48e21,#23d5ab);
+                background-size: 300% 300%;
+                animation: color 50s ease-in-out infinite;
+			}
+            @keyframes color {
+                0%{
+                    background-position: 0 50%;
+                }
+                50%{
+                    background-position: 100% 50%;
+                }
+                100%{
+                    background-position: 0 50%;
+                }
+            }
+                        
+		</style>
+
+
+    </head>
+	
+    <body>
+	<div class="bg-img">
+	<div class="content">
+        <div class = "index-main">
+        <br><br>
+        <div style = "width : 100%; padding-top : 5%;">
+            <div class = "header-content">
+                 <h1 style = "text-align: center;color: white"><span class="header-content-text">CIFAR-10</span></h1>
+            </div>
+        </div>
+
+        <div class="upload-section">
+
+            <div class="upload-file">
+                <form class = "file-form" action="/success" method="post", enctype="multipart/form-data">
+                    <input class="file-form-input" type="file" , name = "file"/>
+                    <button class="btn btn-lg">Upload</button>
+                </form>
+            </div>
+            <br>
+            <div class="uploadOR">
+                <span>OR</span>
+            </div>
+            <br>
+            <div class="upload-link">
+                <form class = "link-form" action="/success" method="post", enctype="multipart/form-data">
+                    <input class="link-form-input" type="text" ,maxlength="1000" , name = "link" placeholder="Paste the image URL"/>
+                    <button class="btn btn-lg">Proceed</button>
+                </form>
+            </div>
+            <div class = "header-content-sub">
+                    <p style = "text-align: center; margin-top: 15px;color: red" class="header-content-info">{{error}}</p>
+            </div>
+        </div>
+
+       
+	     </div>  
+	</div>			 
+	</div>
+    </body>
+</html>

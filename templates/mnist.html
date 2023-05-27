@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Digit Recognition</title>
+    <link rel="icon" type="image/x-icon" href="static/images/rose.png">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style1.css') }}">
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+    
+</head>
+<body onload="init()">
+    <div class="menu">
+        <div class="logo">
+            <h1 style="margin-left:20px; color:blueviolet; margin-top:30px">NHÓM 17</h1>
+        </div>
+        
+    </div>
+     <div class="container">
+        <br>
+        <h3 style="text-align: center; color: white; font-size: 30px;">Nhận diện chữ số viết tay</h3>
+        <br>
+        <canvas id="myCanvas" width="350" height="350" style="margin-left: 40% ;border-radius: 20px;"></canvas>
+        <br><br>
+        <button style="margin-left: 40%;width:120px; padding: 10px 20px; margin-right: 10px; font-size: 20px; background-color: white ; color: black; border: none; border-radius: 4px; cursor: pointer;" onclick="clearCanvas()">Xóa</button>
+        <button style="margin-left: 10px;width:200px;padding: 10px 20px; margin-right: 10px; font-size: 20px; background-color: white ; color: black; border: none; border-radius: 4px; cursor: pointer;" onclick="postImage()">Nhận diện</button>
+        <br><br>
+        <h2 style="font-size: 25px;color:aliceblue;margin-left: 40%;">Kết quả</h2>
+        <div class="result" id="result" style="background-color : white; width: 350px; height: 60px; color: black; margin-left: 40%; font-size: 30px; display: flex; align-items: center; justify-content: center;"></div>
+        <br> <br> <br> 
+        <a href="/home" style="color:rgb(0, 225, 255);margin-left: 40%;font-size:25px">Quay về Trang chủ</p>
+    </div>
+    
+    <script>
+        var mousePressed = false ;
+        var lastX, lastY ;
+        var ctx ;
+
+        function init() {
+            canvas = document.getElementById("myCanvas") 
+            ctx = canvas.getContext("2d") 
+            ctx.fillStyle = 'white' 
+            ctx.fillRect(0,0,canvas.width, canvas.height) 
+
+            canvas.addEventListener('mousedown', function(e) {
+                mousePressed = true;
+                draw(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop, false);
+            });
+
+            canvas.addEventListener('mousemove', function(e) {
+                if (mousePressed) {
+                    draw(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop, true);
+                }
+            });
+
+            canvas.addEventListener('mouseup', function(e) {
+                mousePressed = false;
+            });
+
+            canvas.addEventListener('mouseleave', function(e) {
+                mousePressed = false;
+            });
+
+        }
+
+        function draw(x,y,isDown) {
+            if (isDown) {
+                ctx.beginPath() 
+                ctx.strokeStyle = 'black' 
+                ctx.lineWidth = 20
+                ctx.lineJoin = 'round'
+                ctx.moveTo(lastX, lastY)
+                ctx.lineTo(x,y) 
+                ctx.closePath()
+                ctx.stroke() 
+            }
+            lastX = x 
+            lastY = y 
+        }
+
+        function clearCanvas(){
+            ctx.setTransform(1,0,0,1,0,0)
+            ctx.fillStyle = 'white'
+            ctx.fillRect(0,0,canvas.width, canvas.height)
+        }
+
+
+        function postImage(){
+            var img = document.getElementById("myCanvas").toDataURL("image/png")
+            img = img.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            var data = JSON.stringify({ image: img });
+
+            $.ajax({
+                type: 'POST',
+                url: '/recognize',
+                data: JSON.stringify({image:img}),
+                contentType:'application/json;charset=UTF-8',
+                dataType: 'json',
+                success: function(msg, status, jqXHR ){
+                    var data = JSON.parse(jqXHR.responseText) 
+                    var prediction = data.prediction  
+                    document.getElementById('result').innerHTML = prediction
+                }
+            })
+
+        } 
+    </script>
+</body>
+</html>
